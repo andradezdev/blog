@@ -86,7 +86,8 @@ web_include_css = "blog.bundle.css"
 # ------------
 
 # before_install = "blog.install.before_install"
-# after_install = "blog.install.after_install"
+after_install = "blog.setup.after_install"
+after_migrate = "blog.setup.after_migrate"
 
 # Uninstallation
 # ------------
