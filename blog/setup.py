@@ -7,7 +7,7 @@ def setup_blog_desktop_icon():
         "label": "Blog",
         "icon": "pen",
         "icon_type": "Link",
-        "link_type": "Workspace",
+        "link_type": "Workspace Sidebar",
         "link_to": "Blog",
         "parent_icon": "",
         "hidden": 0,
@@ -31,13 +31,19 @@ def setup_blog_desktop_icon():
                 continue
             try:
                 items = json.loads(l.layout)
-                has_it = any(x.get("name") == icon_name or x.get("label") == icon_name for x in items)
+                has_it = False
+                for item in items:
+                    if item.get("name") == icon_name or item.get("label") == icon_name:
+                        item["link_type"] = "Workspace Sidebar"
+                        item["link_to"] = "Blog"
+                        has_it = True
+                        break
                 if not has_it:
                     c_item = {
                         "label": "Blog",
                         "bg_color": "blue",
                         "link": None,
-                        "link_type": "Workspace",
+                        "link_type": "Workspace Sidebar",
                         "app": "blog",
                         "icon_type": "Link",
                         "parent_icon": "",
@@ -52,9 +58,9 @@ def setup_blog_desktop_icon():
                         "icon_image": None
                     }
                     items.append(c_item)
-                    doc_l = frappe.get_doc("Desktop Layout", l.name)
-                    doc_l.layout = json.dumps(items)
-                    doc_l.save(ignore_permissions=True)
+                doc_l = frappe.get_doc("Desktop Layout", l.name)
+                doc_l.layout = json.dumps(items)
+                doc_l.save(ignore_permissions=True)
             except Exception:
                 pass
 
